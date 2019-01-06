@@ -24,10 +24,11 @@ fail () {
 
 update () {
     local folder=$1
-    inform "update $folder"
+    inform "about to update $folder"
     cd $(folder)
     git pull origin master
     cd ..
+    success "updated $folder"
 }
 
 update_scripts () {
@@ -36,21 +37,25 @@ update_scripts () {
     do
         update folder
     done
+    success 'updated all scripts'
 }
 
 replace_scripts () {
-    inform "replacing scripts"
+    inform "about to replacing scripts"
     for src in $(find "$TERMUX_HOME/" -maxdepth 3 -name '*.py')
     do
         dst="$home/.termux/tasker/$(basename "$src%.*")"
         mv "$src $dst"
+        success "moved $src to $dst"
     done
+    success 'replaced all scripts'
 }
 
 setup () {
     inform "setup $TERMUX_HOME"
     update_scripts
     replace_scripts
+    success 'finished setup'
 }
 
 setup
