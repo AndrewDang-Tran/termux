@@ -1,11 +1,12 @@
-#! /data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
-TERMUX_HOME=$(cd ..; pwd)
+#I assume that this is in $HOME/workspace/termux/
+TERMUX_HOME=$(cd ../..; pwd)
 
 set -e
 
 inform () {
-    printf "  [ \033[00;34m..\033[0m ] $1"
+    printf "  [ \033[00;34m..\033[0m ] $1\n"
 }
 
 user () {
@@ -25,7 +26,7 @@ fail () {
 update () {
     local folder=$1
     inform "about to update $folder"
-    cd $(folder)
+    cd "$folder"
     git pull origin master
     cd ..
     success "updated $folder"
@@ -33,9 +34,12 @@ update () {
 
 update_scripts () {
     inform 'updating scripts'
-    for folder in $(find "$TERMUX_HOME/" -maxdepth 1)
+    for folder in $(find "$TERMUX_HOME/workspace/" -maxdepth 1 -name '*')
     do
-        update folder
+        if [ "$folder" != "$TERMUX_HOME/workspace/" ]
+        then
+            update "$folder"
+        fi
     done
     success 'updated all scripts'
 }
@@ -44,6 +48,7 @@ replace_scripts () {
     inform "about to replacing scripts"
     for src in $(find "$TERMUX_HOME/" -maxdepth 3 -name '*.py')
     do
+        inform "about to move $src"
         dst="$home/.termux/tasker/$(basename "$src%.*")"
         mv "$src $dst"
         success "moved $src to $dst"
