@@ -64,9 +64,9 @@ replace_scripts () {
     for src in $(find "$TERMUX_HOME/workspace/" -maxdepth 3 -name '*.py')
     do
         inform "about to move $src"
-        dst="$TERMUX_HOME/.termux/tasker/$(basename "${src%.*}")"
-        mv "$src" "$dst"
-        success "moved $src to $dst"
+        dst="$TERMUX_HOME/.termux/tasker/$(basename "${src%.*}").py"
+        cp "$src" "$dst"
+        success "copied $src to $dst"
     done
     success 'replaced all scripts'
 }
