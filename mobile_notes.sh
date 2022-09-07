@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 if [ $1 == "push" ]
+then
     cd ~/storage/shared/obsidian-notes;
     git add .;
     git commit -m "Save mobile notes";
@@ -10,6 +11,7 @@ if [ $1 == "push" ]
 fi
 
 if [ $1 == "pull" ]
+then
     cd ~/storage/shared/obsidian-notes;
     git pull origin main;
 fi
